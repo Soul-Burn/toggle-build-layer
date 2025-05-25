@@ -1,0 +1,16 @@
+{
+  "name": "toggle-build-layer",
+  "version": "0.1.0",
+  "title": "Toggle Build Layer",
+  "author": "Soul-Burn",
+  "factorio_version": "2.0",
+  "description": "Toggle normal and underground belts and pipes",
+  "dependencies": [
+    "base >= 2.0"
+  ],
+  "package": {
+    "git_publish_branch": "main",
+    "sync_portal_details": true,
+    "": ""
+  }
+}
