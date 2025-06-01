@@ -59,6 +59,8 @@ local function perform_toggle(event)
             player.hand_location = { inventory = defines.inventory.character_main, slot = slot }
         elseif controller_features.free_items then
             player.cursor_stack.set_stack({ name = other_type, count = prototypes.item[other_type].stack_size })
+        else
+            player.cursor_ghost = other_type
         end
     else
         player.cursor_ghost = other_type
