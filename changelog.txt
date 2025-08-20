@@ -3,6 +3,8 @@ Version: 0.1.2
 Date: ????
   Changes:
     - Fixed readme
+  Fixes:
+    - Handle belts without a related_underground_belt
 ---------------------------------------------------------------------------------------------------
 Version: 0.1.1
 Date: 2025-06-01

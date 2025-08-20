@@ -12,8 +12,10 @@ local function calculate_conversions()
     end
 
     for belt_name, belt in pairs(prototypes.get_entity_filtered({ { filter = "type", type = "transport-belt" } })) do
-        local candidates = { belt.related_underground_belt.name, string.gsub(belt_name, "%-belt", "-underground-belt") }
-        set_candidate(belt_name, candidates)
+        set_candidate(belt_name, {
+            belt.related_underground_belt and belt.related_underground_belt.name,
+            string.gsub(belt_name, "%-belt", "-underground-belt"),
+        })
     end
 
     for pipe_name, _ in pairs(prototypes.get_entity_filtered({ { filter = "type", type = "pipe" } })) do
@@ -25,13 +27,12 @@ end
 
 local conversions = calculate_conversions()
 
-
 local function get_controller_features(player)
     local controllers = {
-        [defines.controllers.character] = {has_items = true, free_items = false},
-        [defines.controllers.editor] = {has_items = true, free_items = true},
+        [defines.controllers.character] = { has_items = true, free_items = false },
+        [defines.controllers.editor] = { has_items = true, free_items = true },
     }
-    return controllers[player.controller_type] or {has_items = false, free_items = false}
+    return controllers[player.controller_type] or { has_items = false, free_items = false }
 end
 
 local function perform_toggle(event)
