@@ -38,33 +38,38 @@ end
 local function perform_toggle(event)
     local player = game.get_player(event.player_index)
 
-    local item_type
+    local item_name, quality
     if player.cursor_stack and player.cursor_stack.valid_for_read then
-        item_type = player.cursor_stack.name
+        item_name = player.cursor_stack.name
+        quality  = player.cursor_stack.quality
     elseif player.cursor_ghost then
-        item_type = player.cursor_ghost.name.name
-    end
-
-    local other_type = conversions[item_type]
-    if not other_type then
+        item_name = player.cursor_ghost.name.name
+        quality = player.cursor_ghost.quality
+    else
         return
     end
-
-    local controller_features = get_controller_features(player)
+    local other_name = conversions[item_name]
+    if not other_name then
+        return
+    end
+    local other_item_with_quality = { name = other_name, quality = quality }
 
     player.clear_cursor()
+
+    local controller_features = get_controller_features(player)
     if controller_features.has_items then
-        local stack, slot = player.get_main_inventory().find_item_stack(other_type)
+        local stack, slot = player.get_main_inventory().find_item_stack(other_item_with_quality)
         if stack then
             player.cursor_stack.transfer_stack(stack)
             player.hand_location = { inventory = defines.inventory.character_main, slot = slot }
         elseif controller_features.free_items then
-            player.cursor_stack.set_stack({ name = other_type, count = prototypes.item[other_type].stack_size })
+            other_item_with_quality.count = prototypes.item[other_name].stack_size
+            player.cursor_stack.set_stack(other_item_with_quality)
         else
-            player.cursor_ghost = other_type
+            player.cursor_ghost = other_item_with_quality
         end
     else
-        player.cursor_ghost = other_type
+        player.cursor_ghost = other_item_with_quality
     end
 end
 
